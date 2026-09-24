@@ -15,13 +15,7 @@ public class StudentAccount extends BankAccount {
         this.schoolName=schoolName;
     }
 
-    @Override
-    public void add(double amount) {
-        double bonusAmount = amount*0.05;
 
-        super.add(bonusAmount);
-        super.add(amount);
-    }
 
     @Override
     protected double getMinimumBalance() {
