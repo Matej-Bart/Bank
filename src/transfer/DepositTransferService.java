@@ -1,4 +1,4 @@
-﻿package transfer;
+package transfer;
 
 import accounts.BankAccount;
 import accounts.StudentAccount;
