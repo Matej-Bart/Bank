@@ -15,14 +15,14 @@ public class TransferTransferService {
         if (amount<=0){
             throw new IllegalArgumentException("Value of the transfer must be positive.");
         }
+
         double newWithdraw = accWithdraw.getBalance() - amount;
+
         if (accWithdraw instanceof BusinessAccount) {
             double transferFee = amount * BUSINESS_ACCOUNT_TRANSFER_FEE;
              newWithdraw-= transferFee;
         }
-        if (newWithdraw<0){
-            throw new IllegalArgumentException("Not enough funds for the transfer");
-        }
+
         accWithdraw.setBalance(newWithdraw);
         accDeposit.setBalance(accDeposit.getBalance() + amount);
     }
