@@ -1,10 +1,12 @@
 package transfer;
 
+import service.WithdrawLimitService;
 import accounts.BankAccount;
 import accounts.BusinessAccount;
 
 public class TransferTransferService {
     private static final double BUSINESS_ACCOUNT_TRANSFER_FEE = 0.003;
+    private final WithdrawLimitService withdrawLimitService = new WithdrawLimitService();
     public void transfer(BankAccount accWithdraw,BankAccount accDeposit,double amount){
         if (accWithdraw == accDeposit) {
             throw new IllegalArgumentException("Cant have the same accounts.");
@@ -21,6 +23,9 @@ public class TransferTransferService {
         if (accWithdraw instanceof BusinessAccount) {
             double transferFee = amount * BUSINESS_ACCOUNT_TRANSFER_FEE;
              newWithdraw-= transferFee;
+        }
+        if (newWithdraw < withdrawLimitService.getWithdrawLimit(accWithdraw)) {
+            throw new IllegalArgumentException("Withdraw limit exceeded.");
         }
 
         accWithdraw.setBalance(newWithdraw);

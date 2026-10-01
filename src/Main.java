@@ -1,18 +1,25 @@
 import accounts.*;
+import service.*;
 import person.AccountOwner;
+import person.AccountOwnerFactory;
+import transfer.DepositTransferService;
 import transfer.TransferTransferService;
-
-import java.util.ArrayList;
-import java.util.List;
+import transfer.WithdrawTransferService;
 
 public class Main{
     public static void main(String[] args) {
         TransferTransferService service = new TransferTransferService();
+        WithdrawTransferService witdraw = new WithdrawTransferService();
+        DepositTransferService deposit = new DepositTransferService();
 
-        AccountOwner owner = new AccountOwner("Matěj","Bartoš");
+        AccountOwnerFactory accountOwnerFactory = new AccountOwnerFactory();
+        BusinessAccountFactory businessAccountFactory = new BusinessAccountFactory();
+        StudentAccountFactory studentAccountFactory = new StudentAccountFactory();
 
-        StudentAccount student = new StudentAccount(owner, "111111/0100",1000, "Delta");
-        BusinessAccount business = new BusinessAccount(owner, "222222/0100", 5000);
+        AccountOwner owner = accountOwnerFactory.createAccountOwner("Matěj", "Bartoš");
+
+        StudentAccount student = studentAccountFactory.createStudentAccount(owner,1000,"Delta");
+        BusinessAccount business = businessAccountFactory.createBusinessAccount(owner, 5000);
 
         // 1) First transfer without any commission
         service.transfer(student, business, 200);

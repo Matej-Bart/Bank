@@ -13,14 +13,14 @@ public abstract class BankAccount {
     private double balance;
 
     private NotifierService notifierService = new ConsoleNotifierService();
-    public BankAccount(AccountOwner accountOwner, String accountNumber) {
-        this.uuid = UUID.randomUUID().toString();
+    public BankAccount(String uuid,AccountOwner accountOwner, String accountNumber) {
+        this.uuid = uuid;
         this.accountOwner = accountOwner;
         this.accountNumber = accountNumber;
         this.balance = 0;
     }
-    public BankAccount(AccountOwner accountOwner,String accountNumber,double balance){
-        this(accountOwner, accountNumber);
+    public BankAccount(AccountOwner accountOwner,String accountNumber,double balance,String uuid){
+        this(uuid,accountOwner, accountNumber);
         this.balance = balance;
     };
 
@@ -30,10 +30,6 @@ public abstract class BankAccount {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    protected double getMinimumBalance() {
-        return 0;
     }
 
 
