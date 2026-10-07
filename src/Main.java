@@ -8,13 +8,16 @@ import transfer.WithdrawTransferService;
 
 public class Main{
     public static void main(String[] args) {
-        TransferTransferService service = new TransferTransferService();
-        WithdrawTransferService witdraw = new WithdrawTransferService();
-        DepositTransferService deposit = new DepositTransferService();
 
         AccountOwnerFactory accountOwnerFactory = new AccountOwnerFactory();
         BusinessAccountFactory businessAccountFactory = new BusinessAccountFactory();
         StudentAccountFactory studentAccountFactory = new StudentAccountFactory();
+
+        TransferLoggerService logger = new TransferLoggerService();
+
+        TransferTransferService service = new TransferTransferService(logger);
+        WithdrawTransferService witdraw = new WithdrawTransferService(logger);
+        DepositTransferService deposit = new DepositTransferService(logger);
 
         AccountOwner owner = accountOwnerFactory.createAccountOwner("Matěj", "Bartoš");
 
@@ -30,6 +33,6 @@ public class Main{
         service.transfer(business, student, 1000);
         System.out.println("Po převodu 2: " + student.getBalance() + " / " + business.getBalance());
         // 1800.0 / 4197.0
-
+        System.out.println(logger.getAllTransactions());
     }
 }
