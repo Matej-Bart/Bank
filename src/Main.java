@@ -1,10 +1,17 @@
 import accounts.*;
+import accounts.serialization.BankAccountGsonSerializer;
+import accounts.serialization.BankAccountJsonSerializer;
+import accounts.serialization.BankAccountSerializer;
+import accounts.serialization.BankAccountXmlSerializer;
 import service.*;
 import person.AccountOwner;
 import person.AccountOwnerFactory;
 import transfer.DepositTransferService;
 import transfer.TransferTransferService;
 import transfer.WithdrawTransferService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main{
     public static void main(String[] args) {
@@ -23,6 +30,24 @@ public class Main{
 
         StudentAccount student = studentAccountFactory.createStudentAccount(owner,1000,"Delta");
         BusinessAccount business = businessAccountFactory.createBusinessAccount(owner, 5000);
+
+        BankAccountXmlSerializer bankAccountXmlSerializator = new BankAccountXmlSerializer();
+        String bankAccountXml = bankAccountXmlSerializator.serialize(student);
+        System.out.println(bankAccountXml);
+
+        BankAccountJsonSerializer bankAccountJsonSerializator = new BankAccountJsonSerializer();
+        String bankAccountJson = bankAccountJsonSerializator.serialize(student);
+        System.out.println(bankAccountJson);
+
+        List<BankAccount> accounts = new ArrayList<>();
+        accounts.add(student);
+        accounts.add(business);
+
+        BankAccountSerializer xmlSerializer = new BankAccountXmlSerializer();
+        System.out.println(xmlSerializer.serializeAll(accounts));
+
+        BankAccountSerializer jsonSerializer = new BankAccountGsonSerializer();
+        System.out.println(jsonSerializer.serializeAll(accounts));
 
         // 1) First transfer without any commission
         service.transfer(student, business, 200);
