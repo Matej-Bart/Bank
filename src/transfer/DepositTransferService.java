@@ -11,7 +11,7 @@ public class DepositTransferService {
         this.logger = logger;
     }
 
-    public void withdraw(BankAccount bankAccount, double amount) {
+    public void deposit(BankAccount bankAccount, double amount) {
         double newBalance = bankAccount.getBalance() + amount;
 
         if (bankAccount instanceof StudentAccount) {
@@ -19,6 +19,7 @@ public class DepositTransferService {
 
             newBalance += depositBonus;
         }
+        bankAccount.setBalance(newBalance);
         logger.logDeposit(bankAccount,amount);
     }
 

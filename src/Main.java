@@ -33,6 +33,9 @@ public class Main{
         service.transfer(business, student, 1000);
         System.out.println("Po převodu 2: " + student.getBalance() + " / " + business.getBalance());
         // 1800.0 / 4197.0
+        deposit.deposit(student,500);
+        witdraw.withdraw(student,100);
+        System.out.println(student.getBalance());
         System.out.println(logger.getAllTransactions());
     }
 }
