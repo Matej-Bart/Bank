@@ -1,8 +1,5 @@
 import accounts.*;
-import accounts.serialization.BankAccountGsonSerializer;
-import accounts.serialization.BankAccountJsonSerializer;
-import accounts.serialization.BankAccountSerializer;
-import accounts.serialization.BankAccountXmlSerializer;
+import accounts.serialization.*;
 import service.*;
 import person.AccountOwner;
 import person.AccountOwnerFactory;
@@ -31,11 +28,11 @@ public class Main{
         StudentAccount student = studentAccountFactory.createStudentAccount(owner,1000,"Delta");
         BusinessAccount business = businessAccountFactory.createBusinessAccount(owner, 5000);
 
-        BankAccountXmlSerializer bankAccountXmlSerializator = new BankAccountXmlSerializer();
+        BankAccountJacksonXmlSerializer bankAccountXmlSerializator = new BankAccountJacksonXmlSerializer();
         String bankAccountXml = bankAccountXmlSerializator.serialize(student);
         System.out.println(bankAccountXml);
 
-        BankAccountJsonSerializer bankAccountJsonSerializator = new BankAccountJsonSerializer();
+        BankAccountGsonSerializer bankAccountJsonSerializator = new BankAccountGsonSerializer();
         String bankAccountJson = bankAccountJsonSerializator.serialize(student);
         System.out.println(bankAccountJson);
 
