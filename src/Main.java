@@ -1,4 +1,6 @@
 import accounts.*;
+import accounts.decorator.BankAccountWithLoggerService;
+import accounts.decorator.BankAccountWithTimeStampLoggerService;
 import accounts.serialization.*;
 import service.*;
 import person.AccountOwner;
@@ -10,12 +12,10 @@ import transfer.WithdrawTransferService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main{
+public class Main {
     public static void main(String[] args) {
 
         AccountOwnerFactory accountOwnerFactory = new AccountOwnerFactory();
-        BusinessAccountFactory businessAccountFactory = new BusinessAccountFactory();
-        StudentAccountFactory studentAccountFactory = new StudentAccountFactory();
 
         TransferLoggerService logger = new TransferLoggerService();
 
@@ -25,11 +25,16 @@ public class Main{
 
         AccountOwner owner = accountOwnerFactory.createAccountOwner("Matěj", "Bartoš");
 
-        AccountLoggerService accountLogger = new AccountLoggerService();
-        LoggingAccountFactory accountFactory = new LoggingAccountFactory(accountLogger);
+        BankAccountService bankAccountService = new BankAccountService();
 
-        StudentAccount student = accountFactory.createStudentAccount(owner, 1000, "Delta");
-        BusinessAccount business = accountFactory.createBusinessAccount(owner, 5000);
+        IBankAccountService loggerService = new BankAccountWithLoggerService(bankAccountService);
+        IBankAccountService timeLoggerService = new BankAccountWithTimeStampLoggerService(bankAccountService);
+        IBankAccountService combinedService = new BankAccountWithLoggerService(
+                new BankAccountWithTimeStampLoggerService(new BankAccountService()));
+
+        BankAccount student = loggerService.createStudentBankAccount(owner, 1000, "Delta");
+        BankAccount business = timeLoggerService.createBusinessBankAccount(owner, 5000);
+        BankAccount student2 = combinedService.createStudentBankAccount(owner, 1000, "Delta");
 
         BankAccountJacksonXmlSerializer bankAccountXmlSerializator = new BankAccountJacksonXmlSerializer();
         String bankAccountXml = bankAccountXmlSerializator.serialize(student);
@@ -58,8 +63,8 @@ public class Main{
         service.transfer(business, student, 1000);
         System.out.println("Po převodu 2: " + student.getBalance() + " / " + business.getBalance());
         // 1800.0 / 4197.0
-        deposit.deposit(student,500);
-        witdraw.withdraw(student,100);
+        deposit.deposit(student, 500);
+        witdraw.withdraw(student, 100);
         System.out.println(student.getBalance());
         System.out.println(logger.getAllTransactions());
     }

@@ -5,7 +5,7 @@ import person.AccountOwner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankAccountService {
+public class BankAccountService implements IBankAccountService{
 
     SavingsAccountFactory savingsAccountFactory = new SavingsAccountFactory();
     CurrentAccountFactory currentAccountFactory = new CurrentAccountFactory();
