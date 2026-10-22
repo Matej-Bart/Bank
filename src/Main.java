@@ -25,8 +25,11 @@ public class Main{
 
         AccountOwner owner = accountOwnerFactory.createAccountOwner("Matěj", "Bartoš");
 
-        StudentAccount student = studentAccountFactory.createStudentAccount(owner,1000,"Delta");
-        BusinessAccount business = businessAccountFactory.createBusinessAccount(owner, 5000);
+        AccountLoggerService accountLogger = new AccountLoggerService();
+        LoggingAccountFactory accountFactory = new LoggingAccountFactory(accountLogger);
+
+        StudentAccount student = accountFactory.createStudentAccount(owner, 1000, "Delta");
+        BusinessAccount business = accountFactory.createBusinessAccount(owner, 5000);
 
         BankAccountJacksonXmlSerializer bankAccountXmlSerializator = new BankAccountJacksonXmlSerializer();
         String bankAccountXml = bankAccountXmlSerializator.serialize(student);
