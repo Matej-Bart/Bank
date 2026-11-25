@@ -6,11 +6,17 @@ import java.util.List;
 
 public class BankAccountXmlSerializer implements BankAccountSerializer {
 
-    BankAccountSerializeFactory bankAccountSerializeFactory = new BankAccountSerializeFactory();
-    public String serializeAll(List<BankAccount> bankAccounts){
+    BankAccountSerializeFactory bankAccountSerializeFactory;
+
+    public BankAccountXmlSerializer(BankAccountSerializeFactory bankAccountSerializeFactory) {
+        this.bankAccountSerializeFactory = bankAccountSerializeFactory;
+    }
+
+    public String serializeAll(List<BankAccount> bankAccounts) {
         StringBuilder builder = new StringBuilder();
+
         builder.append("<root>");
-        for(BankAccount bankAccount : bankAccounts){
+        for (BankAccount bankAccount : bankAccounts) {
             builder.append(this.serialize(bankAccount));
         }
         builder.append("</root>");
@@ -18,8 +24,9 @@ public class BankAccountXmlSerializer implements BankAccountSerializer {
         return builder.toString();
     }
 
-    public String serialize(BankAccount bankAccount){
-        BankAccountSerialize bankAccountSerialize = bankAccountSerializeFactory.createBankAccountSerialize(bankAccount);
+    public String serialize(BankAccount bankAccount) {
+        BankAccountSerialize bankAccountSerialize =
+                bankAccountSerializeFactory.createBankAccountSerialize(bankAccount);
 
         StringBuilder builder = new StringBuilder();
 
@@ -29,4 +36,5 @@ public class BankAccountXmlSerializer implements BankAccountSerializer {
 
         return builder.toString();
     }
+
 }

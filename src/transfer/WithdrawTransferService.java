@@ -1,24 +1,27 @@
 package transfer;
 
-import service.TransferLoggerService;
-import service.WithdrawLimitService;
 import accounts.BankAccount;
 import accounts.BusinessAccount;
+import transfer.services.TransferLoggerService;
+import transfer.services.WithdrawLimitService;
 
 public class WithdrawTransferService {
 
+    private static final double BUSINESS_ACCOUNT_SERVICE_FEE = 0.01;
 
-    private static final double BUSINESS_ACCOUNT_SERVICE_FEE =0.01 ;
-    private final WithdrawLimitService withdrawLimitService = new WithdrawLimitService();
-    private final TransferLoggerService logger;
-    public WithdrawTransferService(TransferLoggerService logger) {
-        this.logger = logger;
+    private final TransferLoggerService transferLoggerService;
+    private final WithdrawLimitService withdrawLimitService;
+
+    public WithdrawTransferService(TransferLoggerService transferLoggerService,
+                                   WithdrawLimitService withdrawLimitService) {
+        this.transferLoggerService = transferLoggerService;
+        this.withdrawLimitService = withdrawLimitService;
     }
 
-    public void withdraw(BankAccount account, double amount){
+    public void withdraw(BankAccount account, double amount) {
         double newBalance = account.getBalance() - amount;
 
-        if (account instanceof BusinessAccount){
+        if (account instanceof BusinessAccount) {
             double serviceFee = amount * BUSINESS_ACCOUNT_SERVICE_FEE;
 
             newBalance -= serviceFee;
@@ -29,7 +32,7 @@ public class WithdrawTransferService {
         }
 
         account.setBalance(newBalance);
-        logger.logWithdrawal(account, amount);
+        transferLoggerService.logWithdrawal(account, amount);
     }
 
 }

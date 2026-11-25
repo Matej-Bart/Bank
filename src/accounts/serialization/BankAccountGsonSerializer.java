@@ -7,24 +7,31 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BankAccountGsonSerializer implements BankAccountSerializer {
+
     Gson gson = new Gson();
 
-    BankAccountSerializeFactory bankAccountSerializeFactory = new BankAccountSerializeFactory();
+    BankAccountSerializeFactory bankAccountSerializeFactory;
 
+    public BankAccountGsonSerializer(BankAccountSerializeFactory bankAccountSerializeFactory) {
+        this.bankAccountSerializeFactory = bankAccountSerializeFactory;
+    }
 
-    @Override
     public String serializeAll(List<BankAccount> bankAccounts) {
-        List<BankAccountSerialize> bankAccountSerialize =new LinkedList<>();
+        List<BankAccountSerialize> bankAccountSerialize = new LinkedList<>();
 
-        for (BankAccount bankAccount : bankAccounts){
-            bankAccountSerialize.add(bankAccountSerializeFactory.createBankAccountSerialize(bankAccount));
+        for (BankAccount bankAccount : bankAccounts) {
+            bankAccountSerialize.add(
+                    bankAccountSerializeFactory.createBankAccountSerialize(bankAccount)
+            );
         }
+
         return gson.toJson(bankAccountSerialize);
     }
 
-    @Override
     public String serialize(BankAccount bankAccount) {
-        BankAccountSerialize bankAccountSerialize = bankAccountSerializeFactory.createBankAccountSerialize(bankAccount);
+        BankAccountSerialize bankAccountSerialize =
+                bankAccountSerializeFactory.createBankAccountSerialize(bankAccount);
+
         return gson.toJson(bankAccountSerialize);
     }
 }

@@ -2,13 +2,16 @@ package transfer;
 
 import accounts.BankAccount;
 import accounts.StudentAccount;
-import service.TransferLoggerService;
+import transfer.services.TransferLoggerService;
 
 public class DepositTransferService {
+
     private static final double STUDENT_ACCOUNT_DEPOSIT_BONUS = 0.005;
-    private final TransferLoggerService logger;
-    public DepositTransferService(TransferLoggerService logger) {
-        this.logger = logger;
+
+    private final TransferLoggerService transferLoggerService;
+
+    public DepositTransferService(TransferLoggerService transferLoggerService) {
+        this.transferLoggerService = transferLoggerService;
     }
 
     public void deposit(BankAccount bankAccount, double amount) {
@@ -19,9 +22,9 @@ public class DepositTransferService {
 
             newBalance += depositBonus;
         }
+
         bankAccount.setBalance(newBalance);
-        logger.logDeposit(bankAccount,amount);
+        transferLoggerService.logDeposit(bankAccount, amount);
     }
 
 }
-
