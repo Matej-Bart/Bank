@@ -2,6 +2,7 @@ package transfer;
 
 import accounts.BankAccount;
 import accounts.BusinessAccount;
+import currency.CurrencyConverterService;
 import transfer.services.TransferLoggerService;
 import transfer.services.WithdrawLimitService;
 
@@ -11,11 +12,14 @@ public class TransferTransferService {
 
     private final TransferLoggerService transferLoggerService;
     private final WithdrawLimitService withdrawLimitService;
+    private final CurrencyConverterService currencyConverterService;
 
     public TransferTransferService(TransferLoggerService transferLoggerService,
-                                   WithdrawLimitService withdrawLimitService) {
+                                   WithdrawLimitService withdrawLimitService,
+                                   CurrencyConverterService currencyConverterService) {
         this.transferLoggerService = transferLoggerService;
         this.withdrawLimitService = withdrawLimitService;
+        this.currencyConverterService = currencyConverterService;
     }
 
     public void transfer(BankAccount accWithdraw, BankAccount accDeposit, double amount) {
@@ -40,8 +44,11 @@ public class TransferTransferService {
             throw new IllegalArgumentException("Withdraw limit exceeded.");
         }
 
+        double depositAmount = currencyConverterService.convert(
+                amount, accWithdraw.getCurrency(), accDeposit.getCurrency());
+
         accWithdraw.setBalance(newWithdraw);
-        accDeposit.setBalance(accDeposit.getBalance() + amount);
+        accDeposit.setBalance(accDeposit.getBalance() + depositAmount);
 
         transferLoggerService.logTransfer(accWithdraw, accDeposit, amount, transferFee);
     }

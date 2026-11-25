@@ -1,5 +1,7 @@
 package transaction;
 
+import currency.Currency;
+
 import java.time.LocalDateTime;
 
 public class Transaction {
@@ -9,14 +11,16 @@ public class Transaction {
     private final String targetAccountNumber;
     private final double amount;
     private final double fee;
+    private final Currency currency;
     private final LocalDateTime timestamp;
-    public Transaction(TransactionType type, String sourceAccountNumber, String targetAccountNumber, double amount, double fee, String uuid, LocalDateTime time) {
+    public Transaction(TransactionType type, String sourceAccountNumber, String targetAccountNumber, double amount, double fee, Currency currency, String uuid, LocalDateTime time) {
         this.uuid = uuid;
         this.type = type;
         this.sourceAccountNumber = sourceAccountNumber;
         this.targetAccountNumber = targetAccountNumber;
         this.amount = amount;
         this.fee = fee;
+        this.currency = currency;
         this.timestamp = time;
     }
     public String getSourceAccountNumber() {
@@ -29,7 +33,7 @@ public class Transaction {
     @Override//at vypis je citelny
     public String toString() {
         return type + " | z: " + sourceAccountNumber + " | na: " + targetAccountNumber
-                + " | částka: " + amount + " | poplatek: " + fee + " | " + timestamp;
+                + " | částka: " + amount + " " + currency + " | poplatek: " + fee + " " + currency + " | " + timestamp;
     }
 
 }
